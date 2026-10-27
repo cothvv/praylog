@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Praylog | 말씀과 기도의 기록</title><style>
+:root{font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;color:#253346;background:#f6f8fc}*{box-sizing:border-box}body{margin:0}.wrap{max-width:1160px;margin:auto;padding:24px 16px 60px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}h1{font-size:26px;margin:0 0 7px}.muted{color:#6c7b8d;font-size:13px}button,select,textarea,input{font:inherit}button{cursor:pointer;border:1px solid #d6deea;background:white;color:#30435c;border-radius:10px;padding:9px 12px}button:hover{background:#edf3fc}.primary{background:#315b9b;color:white;border-color:#315b9b}.primary:hover{background:#244979}.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.panel{background:white;border:1px solid #e2e8f2;border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:0 3px 12px #15263e08}.period{font-size:18px;font-weight:750;margin-bottom:14px}.tablewrap{overflow-x:auto}table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;min-width:780px}th,td{border-bottom:1px solid #e8edf4;border-right:1px solid #e8edf4;padding:12px 9px;text-align:left;vertical-align:top}tr>*:first-child{border-left:1px solid #e8edf4;width:130px}thead th{background:#eff4fc;font-size:14px}tr:first-child>*{border-top:1px solid #e8edf4}thead th:first-child{border-radius:9px 0 0 0}thead th:last-child{border-radius:0 9px 0 0}.category{font-weight:750;background:#f8fafe;font-size:14px}.prayer{display:block;width:100%;text-align:left;border:0;padding:0;background:transparent!important;color:inherit}.top{font-weight:700;font-size:14px;line-height:1.5}.sub{font-size:12px;line-height:1.5;color:#44689b;margin-top:6px;word-break:keep-all}.empty{color:#9ba6b4;font-size:13px}.card-title{font-size:18px;font-weight:750;margin:0 0 12px}.help{background:#f3f7ff;border-radius:11px;padding:13px 15px;font-size:13px;color:#455b76;line-height:1.8}.settings-grid{display:grid;grid-template-columns:minmax(180px,1fr) minmax(190px,1fr);gap:12px;margin-top:12px}.field{display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:650}select,textarea{width:100%;border:1px solid #ced9e8;border-radius:10px;padding:11px;color:#26364d;background:white}textarea{min-height:132px;resize:vertical;line-height:1.8}.bottom{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}.chip{background:#e8effb;color:#315b9b;border-radius:99px;padding:4px 9px;font-size:12px}.questions{width:100%;min-height:65px}.check{display:flex;align-items:center;gap:5px;font-size:12px;color:#617086;margin-top:8px}@media(max-width:600px){h1{font-size:22px}.wrap{padding:16px 10px}.panel{padding:12px}.settings-grid{grid-template-columns:1fr}button{padding:8px 10px}}@media print{body{background:white}.no-print{display:none!important}.wrap{max-width:none;padding:0}.panel{border:0;box-shadow:none}.tablewrap{overflow:visible}table{min-width:0}th,td{padding:8px 5px}.prayer{color:black}}
+.viewbtn.active{background:#315b9b;color:#fff;border-color:#315b9b}.monthweek{margin-bottom:20px}.weeklabel{font-weight:750;background:#eef4fc;border:1px solid #dce6f2;border-bottom:0;padding:10px;border-radius:9px 9px 0 0}.compact{min-width:680px}.compact th,.compact td{padding:7px 6px}.compact .top{font-size:12px}.compact .sub{font-size:11px}.compact .questions{min-height:35px;padding:4px;font-size:12px}.compact tr>*:first-child{width:90px}.tablewrap:has(.monthweek){max-height:none} .questions{border:1px solid #e0e8f1;border-radius:6px} @media print{.monthweek{break-inside:avoid}.compact{min-width:0}.questions{border:0}} 
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid #dbe4f0;border-left:1px solid #dbe4f0}.calendar-head{text-align:center;background:#f0f4fa;font-weight:700;padding:12px 2px;font-size:13px;border-right:1px solid #dbe4f0;border-bottom:1px solid #dbe4f0}.sunday{color:#b85d5d}.calendar-day,.calendar-empty{min-height:104px;min-width:0;padding:7px;background:white;border-right:1px solid #dbe4f0;border-bottom:1px solid #dbe4f0;display:flex;flex-direction:column;align-items:flex-start;gap:12px}.calendar-empty{background:#f7f9fc}.calendar-day.is-done{background:#f0f7f1}.calendar-number{border:0;background:transparent!important;padding:2px 5px;font-weight:700;font-size:15px}.calendar-toggle{font-size:12px;padding:5px 6px;border-radius:7px;background:#f8fafc;max-width:100%;white-space:normal;text-align:left}.calendar-toggle.marked{background:#dfefe2;border-color:#b5d8bc;color:#24643b;font-weight:700}.month-help{margin-bottom:14px}.month-summary{margin-top:14px;font-weight:700;color:#315b9b}.complete-inline{display:flex;align-items:center;gap:4px;font-weight:400;font-size:12px;margin-top:8px;white-space:nowrap}.complete-inline input{width:16px;height:16px;accent-color:#315b9b}@media(max-width:600px){.calendar-day,.calendar-empty{min-height:75px;padding:4px;gap:7px}.calendar-toggle{font-size:10px;padding:3px;line-height:1.25}.calendar-number{font-size:13px}.complete-inline{font-size:11px}}@media print{.calendar-day,.calendar-empty{min-height:72px}.calendar-toggle{border:0}}
+
+.calendar-day{cursor:pointer;gap:7px;transition:background .15s}.calendar-day:hover{background:#f6f9fe}.calendar-day.is-done{background:#fff}.calendar-day.selected-day{outline:2px solid #315b9b;outline-offset:-2px;background:#f5f8ff}.activity-dots{display:flex;gap:5px;flex-wrap:wrap;margin-top:auto}.activity-dot{width:12px;height:12px;border-radius:50%;border:1px solid #ced5de;background:#fff;display:inline-block}.activity-dot.reading.on{background:#6486dd;border-color:#6486dd}.activity-dot.qt.on{background:#e8ad49;border-color:#e8ad49}.activity-dot.prayer.on{background:#45a582;border-color:#45a582}.activity-caption{font-size:10px;color:#6c7b8d}.activity-panel{border:1px solid #dbe4ef;border-radius:13px;background:#fafcff;margin-top:14px;padding:15px}.activity-list{display:flex;gap:10px;flex-wrap:nowrap;margin-top:12px;align-items:center}.activity-option{display:flex;align-items:center;gap:8px;white-space:nowrap;flex:1;justify-content:center;background:white;border:1px solid #e1e7f0;padding:10px 13px;border-radius:9px;cursor:pointer}.activity-option input{width:17px;height:17px}.activity-option.reading input{accent-color:#6486dd}.activity-option.qt input{accent-color:#e8ad49}.activity-option.prayer input{accent-color:#45a582}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#56657a;margin-bottom:14px}.legend>span{display:flex;align-items:center;gap:5px}.activity-stats{font-size:13px;color:#425979;margin-top:10px}.calendar-day .calendar-number{pointer-events:none}@media(max-width:600px){.calendar-day,.calendar-empty{min-height:75px}.activity-dot{width:9px;height:9px}.activity-dots{gap:3px}.activity-caption{display:none}.activity-option{min-width:0;padding:9px 3px;font-size:12px;gap:4px}}
+
+ .calendar-verse{font-size:11px;line-height:1.35;color:#315b9b;font-weight:650;overflow-wrap:anywhere;margin-top:2px;max-width:100%}
+.nav-settings{display:none}.nav-settings.open{display:block}.main-content.hidden{display:none}.settings-actions{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.settings-actions button{font-size:13px}.setup-note{font-size:12px;color:#66778c;margin-top:7px}.editor-input{width:100%;border:1px solid #ced9e8;border-radius:9px;padding:10px}
+@media(max-width:600px){.calendar-verse{font-size:9px;line-height:1.25}.calendar-day{min-height:88px}.settings-actions button{flex:1}}
+.verse-preview{margin:14px 0 0;padding:16px;border:1px solid #dbe4ef;border-radius:12px;background:#fafcff;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.verse-title{font-size:12px;color:#6c7b8d}.verse-reference{font-size:20px;font-weight:800;color:#315b9b;margin-top:4px}.verse-body{border:1px solid #dbe4ef;border-radius:12px;background:white;margin-top:12px;padding:16px;line-height:1.8}.verse-body p{margin:8px 0}.attribution{font-size:12px;color:#6c7b8d}.credit{text-align:center;margin:28px 0 0;color:#6c7b8d;font-size:13px}.credit b{color:#315b9b}
+@media(max-width:410px){.activity-list{gap:4px}.activity-option{padding:9px 2px;font-size:11px}.activity-option input{width:14px;height:14px}}
+@media(min-width:650px){.button-grid{align-items:start}.button-grid .settings-actions{margin:8px 0 2px}}@media(max-width:649px){.button-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.button-grid .settings-actions{align-content:start}.button-grid .settings-actions button{font-size:11px;padding:8px 5px}}
+
+.copy-panel{margin-top:14px;border:1px solid #dbe4ef;border-radius:12px;padding:16px;background:#fff}
+.copy-panel textarea{display:block;width:100%;min-height:120px;padding:12px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;line-height:1.8;resize:vertical;margin:10px 0}
+.copy-panel .copy-status{font-size:12px;color:#64748b}
+.verse-source-status{font-size:12px;color:#64748b;margin-top:6px}
+
+/* Daily category notes */
+.daily-prayer-entry{display:grid;grid-template-columns:minmax(130px,220px) minmax(0,1fr);gap:14px;align-items:start;min-width:0}
+.daily-prayer-info{min-width:0;padding-top:5px}
+.daily-category-note{width:100%;min-height:78px;resize:vertical;line-height:1.6;font-size:14px;background:#fff}
+.daily-note-status{font-size:11px;color:#6c7b8d;margin-top:4px;text-align:right}
+.daily-prayer-entry .prayer{width:100%}
+@media(max-width:580px){.daily-prayer-entry{grid-template-columns:1fr;gap:6px}.daily-category-note{min-height:76px}}
+@media print{.daily-category-note{min-height:75px}}
+
+/* Consistent navigation: tabs never move when settings hides date controls */
+header{display:grid;grid-template-columns:1fr;align-items:start;gap:14px}
+.header-navigation{display:flex;flex-direction:row;justify-content:space-between;align-items:center;gap:12px;width:100%;flex-wrap:wrap}
+.view-tabs{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.navigation-actions{min-height:40px;margin-left:auto;justify-content:flex-end}.icon-print{display:inline-flex;align-items:center;justify-content:center;padding:9px 11px;min-width:42px;height:40px}.icon-print svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:720px){.header-navigation{gap:8px}.view-tabs{gap:5px}.view-tabs button{padding:9px 12px}.navigation-actions{margin-left:0;justify-content:flex-start}.navigation-actions button{font-size:12px;padding:8px 9px}.navigation-actions .icon-print{padding:7px 9px}}
+
+/* Praylog v13 */
+.week-date-link{background:transparent;border:0;padding:2px 0;font-weight:750;color:#315b9b;text-align:left}.week-date-link:hover{text-decoration:underline}
+.reflection-panel{padding:16px;border:1px solid #dbe4ef;border-radius:12px;background:#fafcff;margin:14px 0}
+.reflection-panel h3{font-size:17px;margin:0 0 7px}.reflection-panel .muted{margin-bottom:10px}.reflection-panel textarea{min-height:116px;background:#fff}
+.calendar-day{position:relative}.calendar-day .day-link{margin-left:auto;padding:2px 5px;font-size:17px;font-weight:700;line-height:1.2;color:#315b9b;background:#eff4ff;border:1px solid #d6e3fb;border-radius:6px;cursor:pointer}
+.calendar-day .day-link:hover{background:#dceaff}.calendar-day .date-line{width:100%;display:flex;align-items:center;justify-content:space-between}
+.day-table-heading{font-size:16px;font-weight:750;margin:16px 0 8px}.order-actions{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0 10px}.order-actions button{font-size:12px;padding:7px 10px}
+@media(max-width:600px){.calendar-day .day-link{font-size:15px;padding:1px 4px}.reflection-panel{padding:12px}}
+
+/* v14 settings tree */
+.tree-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:16px 0}.hierarchy-head{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#eaf0fa;border:1px solid #dce5f0;border-radius:9px 9px 0 0;font-weight:750;text-align:center;font-size:13px}.hierarchy-head span{padding:12px 4px}.hierarchy-head span+span{border-left:1px solid #dce5f0}.tree-editor{border:1px solid #dce5f0;border-top:0;border-radius:0 0 9px 9px;overflow:hidden}.tree-cat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid #e0e7f1;min-height:54px}.tree-cat:first-child{border-top:0}.tree-cat-label{display:flex;align-items:center;gap:5px;justify-content:space-between;background:#f1f5fc;padding:9px}.tree-center{grid-column:2/4;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-left:1px solid #e0e7f1}.tree-item{display:contents}.tree-item-name{display:flex;align-items:center;justify-content:space-between;gap:4px;min-height:48px;border-bottom:1px solid #e0e7f1;background:#fbfcff;padding:7px}.tree-subcolumn{border-left:1px solid #e0e7f1;border-bottom:1px solid #e0e7f1;padding:7px;display:flex;flex-direction:column;gap:5px}.tree-subline{display:flex;gap:4px;justify-content:space-between;align-items:center;min-height:28px;background:#fff;border-radius:6px;padding:2px 5px}.tree-name{border:0!important;background:transparent!important;padding:4px!important;box-shadow:none!important;font-weight:650;min-width:0;text-align:left;overflow-wrap:anywhere}.tree-name:hover{text-decoration:underline}.tree-ops{display:flex;align-items:center;gap:2px;flex-shrink:0}.tree-ops button{font-size:13px;padding:3px 6px;border-radius:6px;min-height:27px}.tree-empty{color:#93a0b0;font-size:12px}.tree-add{color:#315b9b}.trash-panel{padding:12px;background:#f6f8fc;border:1px solid #dce5f0;border-radius:9px;margin-bottom:10px}.trash-line{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:5px 0;padding:7px;border-bottom:1px solid #e0e7f1;font-size:13px}.verse-source-status{display:none!important}@media(max-width:600px){.tree-ops button{padding:2px 4px;font-size:12px}.tree-cat-label,.tree-item-name,.tree-subcolumn{padding:4px;gap:2px}.tree-name{font-size:12px}.tree-ops{flex-wrap:wrap}.hierarchy-head{font-size:11px}}
+
+/* Praylog v16 - Firebase key corrected; existing v15 features unchanged */
+.hidden{display:none!important}
+.auth-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid #e2e8f2;border-radius:13px;padding:11px 14px;margin-bottom:16px}
+.auth-info{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap}.auth-info strong{font-size:13px}.auth-state{font-size:12px;color:#536984}.auth-state.warn{color:#a54d16}.auth-state.ok{color:#206b50}
+.auth-buttons{display:flex;gap:7px;flex-wrap:wrap}.auth-buttons button{font-size:12px;padding:7px 10px}
+.cloud-banner{background:#f1f6ff;border:1px solid #cbdcf8;border-radius:12px;padding:14px;margin-bottom:16px;font-size:13px;line-height:1.8}
+.cloud-banner.warning{background:#fff8e9;border-color:#f4deb2}.cloud-banner p{margin:0 0 8px}.cloud-banner .controls{margin-top:10px}
+.tree-inputline{display:flex;align-items:center;flex-wrap:wrap;gap:5px;width:100%;min-width:0}.tree-inputline input{font:inherit;padding:7px;min-width:70px;flex:1;width:100%;border:1px solid #93b4e9;border-radius:6px;background:white}.tree-inputline button{padding:5px 7px;font-size:12px}
+.tree-inline-error{font-size:12px;color:#b03535;padding:5px 0}.tree-cat-label .tree-name,.tree-item-name .tree-name{flex:1}
+.share-options{margin:16px 0 0;padding:14px;border:1px solid #e0e7f1;border-radius:10px;background:#fafcff}.share-options summary{font-size:14px;font-weight:700;cursor:pointer}.share-options .share-checks{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}.share-checks label{display:flex;align-items:center;gap:4px;font-size:12px}.share-options textarea{min-height:125px;font-size:12px;white-space:pre-wrap}
+@media(min-width:721px){.auth-bar{margin-top:-2px}}
+@media print{.auth-bar,.cloud-banner,.share-options{display:none!important}}
+</style></head><body><main class="wrap"><header><div><h1>🙏 Praylog</h1><div class="muted">말씀과 기도로 기록하는 하루 · 월간 체크 · 주간 기도표 · 하루 기록</div></div><div class="header-navigation no-print"><div class="view-tabs"><button class="viewbtn" data-view="month">한 달</button><button class="viewbtn active" data-view="week">1주</button><button class="viewbtn" data-view="day">하루</button><button class="viewbtn" data-view="settings">설정</button></div><div class="controls navigation-actions"><button id="prev">◀ 이전 주</button><button id="today">이번 주</button><button id="next">다음 주 ▶</button><button id="print" class="icon-print" type="button" aria-label="인쇄 또는 PDF 저장" title="인쇄 / PDF"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/><path d="M18 12h.01"/></svg></button></div></div></header>
+<div class="auth-bar no-print" aria-label="Google 계정 및 동기화">
+  <div class="auth-info"><strong id="auth-user">방문자 모드</strong><span id="auth-state" class="auth-state" role="status">기록은 현재 브라우저에만 저장돼요.</span></div>
+  <div class="auth-buttons"><button id="auth-login" class="primary" type="button">Google 로그인</button><button id="auth-sync" class="hidden" type="button">↻ 동기화</button><button id="auth-logout" class="hidden" type="button">로그아웃</button></div>
+</div>
+<div id="cloud-banner" class="cloud-banner no-print hidden" role="region" aria-label="계정 이전 또는 연결 안내"></div>
+
+<div class="main-content" id="main-content"><section class="panel"><div class="period" id="period"></div><div class="tablewrap" id="tablewrap"></div><div class="bottom"><span class="muted">월간·주간·하루의 활동 기록은 서로 연결돼요. Google 로그인 후에는 같은 계정의 다른 기기와 동기화할 수 있어요.</span><button class="no-print" id="reshuffle">↻ 선택 주 재배치</button></div><div class="help" id="detail" style="margin-top:12px">기도 제목을 클릭하면 세부 내용이 표시됩니다.</div></section></div>
+<div class="nav-settings" id="settings-content"><section class="panel no-print"><h2 class="card-title">기도 대상 관리</h2><p class="muted">카테고리를 선택하면 기도 제목이 펼쳐지고, 기도 제목을 선택하면 세부 대상이 보여요. + 버튼으로 각 단계에 항목을 추가할 수 있어요.</p><div class="tree-toolbar"><button id="tree-add-category" class="primary">＋ 카테고리 추가</button><button id="tree-trash-toggle">↶ 삭제 항목 복구 <span id="trash-count"></span></button></div><div id="trash-panel" class="trash-panel hidden"></div><div class="hierarchy-head"><span>카테고리</span><span>기도 제목</span><span>세부 대상</span></div><div id="tree-editor" class="tree-editor"></div><p class="muted" style="margin-top:14px">각 항목 옆의 ＋로 추가하고, 연필로 이름을 수정할 수 있어요. 삭제 항목은 복구함에서 하나씩 되돌릴 수 있어요.</p></section></div><footer class="credit">Made by <b>@cothvv</b> · 말씀 인용: 성경전서 개역한글판 (대한성서공회, 1961)</footer></main>
+<script>
+// Guest records use the original keys for backward compatibility. Signed-in users use isolated per-UID caches.
+let activeUid=null;
+let cloudReady=false;
+const cloudPrefix=uid=>'praylogV15_user_'+uid+'_';
+function appKey(k){return k==='prayerBibleVersePoolV1'?k:(activeUid?cloudPrefix(activeUid)+k:k)}
+const appStore={
+ getItem(k){return localStorage.getItem(appKey(k))},
+ setItem(k,value){
+  const v=String(value);
+  localStorage.setItem(appKey(k),v);
+  if(activeUid && k!=='prayerBibleVersePoolV1'){
+   localStorage.setItem('praylogV15_ts_'+activeUid+'_'+encodeURIComponent(k),String(Date.now()));
+   if(cloudReady)window.dispatchEvent(new CustomEvent('praylog:local-change',{detail:{uid:activeUid,key:k,value:v}}));
+  }
+ },
+ removeItem(k){localStorage.removeItem(appKey(k))}
+};
+function reloadAccountData(){
+ if(typeof editing!=='undefined')editing=null;
+ try{tree=JSON.parse(appStore.getItem(stateKey))||structuredClone(defaults)}catch(e){tree=structuredClone(defaults)}
+ try{refresh=JSON.parse(appStore.getItem('prayerRefreshV2'))||{}}catch(e){refresh={}}
+ try{trash=JSON.parse(appStore.getItem(trashKey))||[]}catch(e){trash=[]}
+ expandedCategory=Object.hasOwn(tree,expandedCategory)?expandedCategory:(Object.keys(tree)[0]||'');expandedParent='';
+ renderSettingsTree();render();
+}
+window.praylogSetActiveUser=(uid,ready)=>{activeUid=uid||null;cloudReady=!!ready;reloadAccountData()};
+
+const defaults={
+'감정':{'시기/질투':[],'화/참음':[],'교만/겸손':[],'지혜':[],'용기/담대함':[]},
+'개인':{'나의가정':[],'가족':['부모님1','부모님2','서은이네','사촌'],'회사':[],'지인':[],'나':[]},
+'청년부':{'교사':['목사님','장로님','집사님','교사들'],'임원':['임원1 (미정)','임원2 (미정)','임원3 (미정)','임원4 (미정)','임원5 (미정)'],'사역팀':['찬양팀','홍보팀','방송팀','예배팀','중보기도팀','선교팀','동아리팀'],'각나무':['1나무 (미정)','2나무 (미정)','3나무 (미정)','4나무 (미정)','5나무 (미정)','6나무 (미정)','7나무 (미정)','8나무 (미정)'],'새싹':[]},
+'교회':{'장성교회':[],'목회자':['정연수 (원로목사)','박석진 (담임목사)','장진용 (부목사)','권민수 (부목사)','제갈민철 (부목사)','장재운 (부목사)','김태준 (부목사)','김요셉 (부목사)','윤선아 (부목사)','장선훈 (교육목사)','김경미 (교육목사)','김숙희 (전도사)','권정미 (교육전도사)','김혜경 (교육전도사)','홍주경 (교육전도사)','김수지 (교육전도사)'],'저학년부':[],'청년부':[],'찬양단':['카라','헵시바','루아흐']},
+'나라':{'우리나라':[],'경북/포항':[],'북한':[],'타국':[],'타국 (두 번째)':[]}}
+const stateKey='prayerTreeV2';let tree;try{tree=JSON.parse(appStore.getItem(stateKey))||structuredClone(defaults)}catch(e){tree=structuredClone(defaults)}
+let selectedDate=new Date(2026,10,2);let weekStart=getMonday(new Date(2026,10,2));let monthCursor=new Date(2026,10,1);let view='week',dayOffset=0;const baseMonday=getMonday(new Date(2026,0,5));let refresh={};try{refresh=JSON.parse(appStore.getItem('prayerRefreshV2'))||{}}catch(e){}
+function getMonday(date){let d=new Date(date.getFullYear(),date.getMonth(),date.getDate());d.setDate(d.getDate()-((d.getDay()+6)%7));return d}
+function dateKey(d){return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
+function hash(s){let h=2166136261;for(let c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
+function random(seed){let x=seed>>>0;return ()=>{x+=0x6D2B79F5;let t=x;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296}}
+function shuffled(arr,seed){let a=[...arr],r=random(seed);for(let i=a.length-1;i>0;i--){let j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function weekIndex(d){return Math.round((getMonday(d)-baseMonday)/604800000)}
+function slot(cat,week){let names=Object.keys(tree[cat]);let prior=week> -48?shuffled(names,hash(cat+'|'+(week-1))):[];let curr=shuffled(names,hash(cat+'|'+week+'|'+(refresh[dateKey(weekStart)]||0)));if(prior.length===curr.length){for(let j=0;j<25&&curr.some((v,i)=>v===prior[i]);j++){let t=shuffled(names,hash(cat+'|'+week+'|'+j+'|'+(refresh[dateKey(weekStart)]||0)));if(t.filter((v,i)=>v===prior[i]).length<curr.filter((v,i)=>v===prior[i]).length)curr=t}}return curr}
+function chooseChild(cat,parent,week){const arr=tree[cat][parent]||[];if(!arr.length)return '';const block=Math.floor(week/arr.length),pos=((week%arr.length)+arr.length)%arr.length;let order=shuffled(arr,hash(cat+'>'+parent+'|cycle|'+block));if(block>0&&arr.length>1){let last=shuffled(arr,hash(cat+'>'+parent+'|cycle|'+(block-1))).at(-1);if(order[0]===last)[order[0],order[1]]=[order[1],order[0]]}return order[pos]}
+function el(tag,cls,txt){let e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
+function getEntry(cat,name,week){let child=chooseChild(cat,name,week),title=name.replace(' (두 번째)',''),detail='';if(cat==='교회'&&name==='목회자'&&child){let m=child.match(/^(.*?) \((.*?)\)$/);if(m){title='목회자';detail=m[2]+' · '+m[1]}else detail=child}else if(cat==='청년부'&&name==='임원'){detail=child.replace(/\s*\(미정\)/,'');}else if(cat==='청년부'&&name==='사역팀'){title=child||name}else if(child){detail=child.replace(/ \(미정\)/,'')}return {title,detail,child}}
+function makePrayer(cat,name,w){let e=getEntry(cat,name,w),b=el('button','prayer');b.append(el('div','top',e.title));if(e.detail)b.append(el('div','sub',e.detail));b.onclick=()=>{document.getElementById('detail').textContent=`${cat} → ${name.replace(' (두 번째)','')}${e.child?' → '+e.child:''}`};return b}
+const activities=[{id:'reading',label:'말씀읽기'},{id:'qt',label:'QT'},{id:'prayer',label:'기도'}];let selectedMonthDay=2;
+function getActivities(d){let k='prayerActivity_'+dateKey(d);let data={};try{data=JSON.parse(appStore.getItem(k))||{}}catch(e){};if(appStore.getItem('prayerDone_'+dateKey(d))==='1' && data.prayer===undefined)data.prayer=true;return data}
+function isActivityDone(d,id){return !!getActivities(d)[id]}
+function setActivity(d,id,v){let data=getActivities(d);data[id]=v;appStore.setItem('prayerActivity_'+dateKey(d),JSON.stringify(data));if(id==='prayer')appStore.setItem('prayerDone_'+dateKey(d),v?'1':'0');render()}
+function isDone(d){return isActivityDone(d,'prayer')}
+function setDone(d,v){setActivity(d,'prayer',v)}
+function doneCheck(d,inline=false){let label=el('label',inline?'complete-inline':'complete-label'),input=el('input');input.type='checkbox';input.checked=isDone(d);input.setAttribute('aria-label',dateKey(d)+' 기도 완료');input.onchange=()=>setDone(d,input.checked);label.append(input,document.createTextNode(inline?' 기도 완료':' 완료'));return label}
+function activityDots(d){let dots=el('div','activity-dots');activities.forEach(a=>{let dot=el('span','activity-dot '+a.id+(isActivityDone(d,a.id)?' on':''));dot.title=a.label+(isActivityDone(d,a.id)?' 완료':' 미완료');dots.append(dot)});return dots}
+// 개역한글판(1961) 공개 이용 가능 본문: 본문은 출처와 동일성을 유지하여 표기합니다.
+let verses=[
+{ref:'창세기 1장 1절',text:'태초에 하나님이 천지를 창조하시니라'},
+{ref:'시편 23편 1절',text:'여호와는 나의 목자시니 내가 부족함이 없으리로다'},
+{ref:'시편 119편 105절',text:'주의 말씀은 내 발에 등이요 내 길에 빛이니이다'},
+{ref:'마태복음 5장 9절',text:'화평케 하는 자는 복이 있나니 저희가 하나님의 아들이라 일컬음을 받을 것임이요'},
+{ref:'마태복음 6장 33절',text:'너희는 먼저 그의 나라와 그의 의를 구하라 그리하면 이 모든 것을 너희에게 더하시리라'},
+{ref:'요한복음 11장 35절',text:'예수께서 눈물을 흘리시더라'},
+{ref:'데살로니가전서 5장 16절',text:'항상 기뻐하라'},
+{ref:'데살로니가전서 5장 17절',text:'쉬지 말고 기도하라'},
+{ref:'데살로니가전서 5장 18절',text:'범사에 감사하라 이는 그리스도 예수 안에서 너희를 향하신 하나님의 뜻이니라'},
+{ref:"시편 1편 2절",text:"오직 여호와의 율법을 즐거워하여 그 율법을 주야로 묵상하는 자로다"},
+{ref:"시편 1편 3절",text:"저는 시냇가에 심은 나무가 시절을 좇아 과실을 맺으며 그 잎사귀가 마르지 아니함 같으니 그 행사가 다 형통하리로다"},
+{ref:"시편 2편 11절",text:"여호와를 경외함으로 섬기고 떨며 즐거워할지어다"},
+{ref:"시편 3편 3절",text:"여호와여 주는 나의 방패시요 나의 영광이시요 나의 머리를 드시는 자니이다"},
+{ref:"시편 3편 4절",text:"내가 나의 목소리로 여호와께 부르짖으니 그 성산에서 응답하시는도다(셀라)"},
+{ref:"시편 3편 5절",text:"내가 누워 자고 깨었으니 여호와께서 나를 붙드심이로다"},
+{ref:"시편 3편 8절",text:"구원은 여호와께 있사오니 주의 복을 주의 백성에게 내리소서(셀라)"},
+{ref:"시편 4편 1절",text:"내 의의 하나님이여 내가 부를 때에 응답하소서 곤란 중에 나를 너그럽게 하셨사오니 나를 긍휼히 여기사 나의 기도를 들으소서"},
+{ref:"시편 4편 3절",text:"여호와께서 자기를 위하여 경건한 자를 택하신줄 너희가 알지어다 내가 부를 때에 여호와께서 들으시리로다"},
+{ref:"시편 4편 4절",text:"너희는 떨며 범죄치 말지어다 자리에 누워 심중에 말하고 잠잠할지어다(셀라)"},
+{ref:"시편 4편 5절",text:"의의 제사를 드리고 여호와를 의뢰할지어다"},
+{ref:"시편 4편 7절",text:"주께서 내 마음에 두신 기쁨은 저희의 곡식과 새 포도주의 풍성할 때보다 더하니이다"},
+{ref:"시편 4편 8절",text:"내가 평안히 눕고 자기도 하리니 나를 안전히 거하게 하시는 이는 오직 여호와시니이다"},
+{ref:"시편 5편 1절",text:"여호와여 나의 말에 귀를 기울이사 나의 심사를 통촉하소서"},
+{ref:"시편 5편 2절",text:"나의 왕, 나의 하나님이여 나의 부르짖는 소리를 들으소서 내가 주께 기도하나이다"},
+{ref:"시편 5편 3절",text:"여호와여 아침에 주께서 나의 소리를 들으시리니 아침에 내가 주께 기도하고 바라리이다"},
+{ref:"시편 5편 7절",text:"오직 나는 주의 풍성한 인자를 힘입어 주의 집에 들어가 주를 경외함으로 성전을 향하여 경배하리이다"},
+{ref:"시편 5편 8절",text:"여호와여 나의 원수들을 인하여 주의 의로 나를 인도하시고 주의 길을 내 목전에 곧게 하소서"},
+{ref:"시편 5편 11절",text:"오직 주에게 피하는 자는 다 기뻐하며 주의 보호로 인하여 영영히 기뻐 외치며 주의 이름을 사랑하는 자들은 주를 즐거워하리이다"},
+{ref:"시편 5편 12절",text:"여호와여 주는 의인에게 복을 주시고 방패로 함 같이 은혜로 저를 호위하시리이다"},
+{ref:"시편 6편 2절",text:"여호와여 내가 수척하였사오니 긍휼히 여기소서 여호와여 나의 뼈가 떨리오니 나를 고치소서"},
+{ref:"시편 6편 3절",text:"나의 영혼도 심히 떨리나이다 여호와여 어느 때까지니이까"},
+{ref:"시편 6편 4절",text:"여호와여 돌아와 나의 영혼을 건지시며 주의 인자하심을 인하여 나를 구원하소서"},
+{ref:"시편 6편 9절",text:"여호와께서 내 간구를 들으셨음이여 여호와께서 내 기도를 받으시리로다"},
+{ref:"시편 7편 1절",text:"여호와 내 하나님이여 주께 피하오니 나를 쫓는 모든 자에게서 나를 구하여 건지소서"},
+{ref:"시편 1편 1절",text:"복 있는 사람은 악인의 꾀를 좇지 아니하며 죄인의 길에 서지 아니하며 오만한 자의 자리에 앉지 아니하고"},
+{ref:"시편 2편 10절",text:"그런즉 군왕들아 너희는 지혜를 얻으며 세상의 관원들아 교훈을 받을지어다"},
+{ref:"시편 3편 6절",text:"천만인이 나를 둘러치려 하여도 나는 두려워 아니하리이다"},
+{ref:"시편 4편 6절",text:"여러 사람의 말이 우리에게 선을 보일 자 누구뇨 하오니 여호와여 주의 얼굴을 들어 우리에게 비취소서"},
+{ref:"시편 6편 8절",text:"행악하는 너희는 다 나를 떠나라 여호와께서 내 곡성을 들으셨도다"}
+];
+// 확장 본문이 366개 이상일 때에는 한 해 전체에서 말씀을 반복하지 않습니다.
+// 데이터를 아직 받지 못했을 때는 기존 39개를 사용하며 월 내 중복을 방지합니다.
+function dailyVerse(d){
+  const year=d.getFullYear(),month=d.getMonth(),day=d.getDate();
+  if(verses.length>=366){
+    const dayOfYear=Math.floor((new Date(year,month,day)-new Date(year,0,1))/86400000);
+    const order=shuffled(verses,hash('yearly-scripture|'+year));
+    const prev=shuffled(verses,hash('yearly-scripture|'+(year-1)));
+    const prevLast=prev[(new Date(year,0,0)).getDate()===31 && new Date(year-1,1,29).getMonth()===1?365:364];
+    if(prevLast && order[0].ref===prevLast.ref){const k=order.findIndex((v,i)=>i>0&&v.ref!==prevLast.ref);if(k>0)[order[0],order[k]]=[order[k],order[0]];}
+    return order[dayOfYear];
+  }
+  const lastPrevMonth=new Date(year,month,0);
+  const prevOrder=shuffled(verses,hash('monthly-scripture|'+lastPrevMonth.getFullYear()+'|'+lastPrevMonth.getMonth()));
+  const prevLast=prevOrder[(lastPrevMonth.getDate()-1)%verses.length];
+  const order=shuffled(verses,hash('monthly-scripture|'+year+'|'+month));
+  if(prevLast&&order[0].ref===prevLast.ref){const swap=order.findIndex((v,i)=>i>0&&v.ref!==prevLast.ref);if(swap>0)[order[0],order[swap]]=[order[swap],order[0]];}
+  return order[(day-1)%order.length];
+}
+const bibleBooks=[['Psalms','시편','편'],['Proverbs','잠언','장'],['Matthew','마태복음','장'],['John','요한복음','장']];
+const verseCacheKey='prayerBibleVersePoolV1';
+try{const cached=JSON.parse(appStore.getItem(verseCacheKey)||'null');if(Array.isArray(cached)&&cached.length>=366)verses=cached}catch(e){}
+async function loadExtendedVerses(){
+  if(verses.length>=366)return;
+  const collected=[];
+  try{
+    for(const [filename,title,unit] of bibleBooks){
+      const url='https://raw.githubusercontent.com/bluesaurel/Korean-Bible-1961-KRV/main/data/'+filename+'.json';
+      const response=await fetch(url,{cache:'force-cache'});
+      if(!response.ok)throw Error('Bible source '+response.status);
+      const book=await response.json();
+      for(const ch of book.chapters||[]){
+        for(const v of ch.verses||[]){
+          const t=String(v.text||'').trim();
+          if(t.length>=16&&t.length<=190 && !/^\(없음\)/.test(t))collected.push({ref:title+' '+ch.chapter+unit+' '+v.verse+'절',text:t});
+        }
+      }
+    }
+    if(collected.length<366)throw Error('성경 본문 수 부족');
+    verses=collected;
+    try{appStore.setItem(verseCacheKey,JSON.stringify(collected))}catch(e){}
+    render();
+  }catch(err){console.info('확장 말씀 로드 실패: 기존 39구절 사용',err)}
+}
+
+function versePreview(d){const v=dailyVerse(d),box=el('section','verse-preview');let left=el('div');left.append(el('div','verse-title','오늘의 말씀 · 선택한 날짜에 고정'),el('div','verse-reference',v.ref));box.append(left);return box}
+function verseBody(d){
+ const v=dailyVerse(d),box=el('section','verse-body');
+ box.append(el('strong',null,'오늘의 말씀 · '+v.ref),el('p',null,v.text),el('div','attribution','성경전서 개역한글판 (대한성서공회, 1961)'));
+ const info=el('div','verse-source-status','');
+ box.append(info);return box;
+}
+function verseCopy(d){
+ const v=dailyVerse(d),panel=el('section','copy-panel');
+ const title=el('strong',null,'말씀 따라 쓰기');
+ const guide=el('div','muted','위 말씀을 한 번 직접 타이핑해 보세요. 입력 내용은 이 날짜에 자동 저장됩니다.');
+ const input=el('textarea');input.placeholder='오늘의 말씀을 여기에 따라 써 보세요.';
+ const storageKey='prayerVerseCopy_'+dateKey(d);
+ const saved=appStore.getItem(storageKey);
+ input.value=saved?JSON.parse(saved).value||'':'';
+ const status=el('div','copy-status');
+ function update(){
+  const normalize=x=>x.replace(/\s+/g,'').replace(/[.,!?·()]/g,'');
+  const exact=normalize(input.value)===normalize(v.text);
+  status.textContent=!input.value.trim()?'아직 입력하지 않았어요.':exact?'✓ 오늘의 말씀을 모두 따라 썼어요!':'자동 저장됨 · '+input.value.trim().length+'자 입력';
+ }
+ input.addEventListener('input',()=>{appStore.setItem(storageKey,JSON.stringify({value:input.value,ref:v.ref}));update()});
+ update();panel.append(title,guide,input,status);return panel;
+}
+function reflection(d,id,title,help,placeholder){
+ const box=el('section','reflection-panel');box.append(el('h3',null,title));
+ if(help)box.append(el('div','muted',help));
+ const input=el('textarea');input.placeholder=placeholder;
+ const key='praylogReflectionV1_'+id+'_'+dateKey(d);input.value=appStore.getItem(key)||'';
+ input.addEventListener('input',()=>appStore.setItem(key,input.value));
+ box.append(input);return box;
+}
+function openDay(d){selectedDate=new Date(d.getFullYear(),d.getMonth(),d.getDate());weekStart=getMonday(selectedDate);dayOffset=(selectedDate.getDay()+6)%7;view='day';render();window.scrollTo({top:0,behavior:'smooth'})}
+function reorder(obj,key,delta){let keys=Object.keys(obj),at=keys.indexOf(key),to=at+delta;
+ if(at<0||to<0||to>=keys.length)return obj;
+ [keys[at],keys[to]]=[keys[to],keys[at]];
+ return Object.fromEntries(keys.map(k=>[k,obj[k]]));}
+function activityEditor(d){let panel=el('div','activity-panel');panel.append(el('strong',null,`${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 활동 체크`));let opts=el('div','activity-list');activities.forEach(a=>{let label=el('label','activity-option '+a.id),input=el('input');input.type='checkbox';input.checked=isActivityDone(d,a.id);input.onchange=()=>setActivity(d,a.id,input.checked);label.append(input,document.createTextNode(a.label));opts.append(label)});panel.append(opts);return panel}
+function questionBox(d){let input=el('textarea','questions');input.placeholder='기도 중 질문';let k='q_'+dateKey(d);input.value=appStore.getItem(k)||'';input.oninput=()=>appStore.setItem(k,input.value);return input}
+function dailyCategoryEntry(cat,title,w,d){
+  const entry=el('div','daily-prayer-entry'), info=el('div','daily-prayer-info');
+  info.append(makePrayer(cat,title,w));
+  const noteWrap=el('div');
+  const input=el('textarea','daily-category-note');
+  input.setAttribute('aria-label',`${cat} 기도 메모`);
+  input.placeholder=`${title}에 관한 기도 내용이나 오늘의 생각을 적어보세요.`;
+  // A category gets one independent note per date, even after the weekly order changes.
+  const key='prayerCategoryNoteV1_'+dateKey(d)+'_'+encodeURIComponent(cat);
+  try{input.value=appStore.getItem(key)||''}catch(e){}
+  const status=el('div','daily-note-status',input.value?'저장된 메모':'입력하면 자동 저장');
+  input.addEventListener('input',()=>{
+    try{appStore.setItem(key,input.value);status.textContent='자동 저장됨'}
+    catch(e){status.textContent='저장하지 못했어요. 브라우저 저장 공간을 확인해 주세요.'}
+  });
+  noteWrap.append(input,status);
+  entry.append(info,noteWrap);
+  return entry;
+}
+function makeTable(monday,dayIndices,compact=false){let t=el('table',compact?'compact':''),thead=el('thead'),tr=el('tr');tr.append(el('th',null,'구분'));for(let i of dayIndices){let d=new Date(monday);d.setDate(d.getDate()+i);let th=el('th');let link=el('button','week-date-link',`${['월','화','수','목','금'][i]} · ${d.getMonth()+1}/${d.getDate()} ↗`);link.type='button';link.title='이 날짜의 하루 보기';link.onclick=()=>openDay(d);th.append(link,doneCheck(d,true));tr.append(th)}thead.append(tr);t.append(thead);let tbody=el('tbody'),w=weekIndex(monday);Object.keys(tree).forEach(cat=>{let row=el('tr');row.append(el('td','category',cat));let names=slot(cat,w);for(let i of dayIndices){let td=el('td');if(names[i]){if(dayIndices.length===1){let d=new Date(monday);d.setDate(d.getDate()+i);td.append(dailyCategoryEntry(cat,names[i],w,d));}else td.append(makePrayer(cat,names[i],w));}else td.append(el('span','empty','—'));row.append(td)}tbody.append(row)});let qrow=el('tr');qrow.append(el('td','category','질문'));for(let i of dayIndices){let d=new Date(monday);d.setDate(d.getDate()+i);let td=el('td');td.append(questionBox(d));qrow.append(td)}tbody.append(qrow);t.append(tbody);return t}
+
+function shareDayPanel(d){
+ const details=el('details','share-options');details.append(el('summary',null,'선택한 하루 기록 복사 · 공유'));
+ const help=el('p','muted','공유할 내용을 골라서 복사할 수 있어요. 링크만 공유해서 다른 사람의 비공개 기록이 공개되지는 않아요.');details.append(help);
+ const fields=[['verse','오늘의 말씀',true],['reflection','하루 돌아보기',false],['notes','기도 제목·메모',false],['tomorrow','내일을 기대하며',false]];
+ const checks=el('div','share-checks'),picked={};
+ for(const [key,title,checked] of fields){const label=el('label'),input=el('input');input.type='checkbox';input.checked=checked;picked[key]=input;input.onchange=refreshPreview;label.append(input,document.createTextNode(title));checks.append(label)}
+ const text=el('textarea');text.readOnly=true;text.setAttribute('aria-label','공유할 내용 미리보기');
+ const btn=el('button','primary','복사하기'),status=el('div','muted','내용을 확인한 뒤 복사하세요.');
+ function saved(key){return appStore.getItem(key)||''}
+ function compose(){
+  const output=[`${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 · Praylog`];
+  if(picked.verse.checked){const v=dailyVerse(d);output.push(`\n오늘의 말씀 · ${v.ref}\n${v.text}`)}
+  if(picked.reflection.checked){const s=saved('praylogReflectionV1_today_'+dateKey(d));if(s.trim())output.push('\n오늘 하루를 돌아보며\n'+s)}
+  if(picked.notes.checked){const idx=(d.getDay()+6)%7;if(idx<5){let m=getMonday(d),w=weekIndex(m),lines=[];for(const cat of Object.keys(tree)){const name=slot(cat,w)[idx];const note=saved('prayerCategoryNoteV1_'+dateKey(d)+'_'+encodeURIComponent(cat));if(name||note){let details=name?getEntry(cat,name,w):null;lines.push(cat+' · '+(details?.title||'')+(details?.detail?' ('+details.detail+')':'')+(note?'\n'+note:''))}};const question=saved('q_'+dateKey(d));if(question.trim())lines.push('질문\n'+question);if(lines.length)output.push('\n오늘의 기도 제목\n'+lines.join('\n'))}else{let s=saved('praylogReflectionV1_weekend_'+dateKey(d));if(s.trim())output.push('\n기도 기록\n'+s)}}
+  if(picked.tomorrow.checked){const s=saved('praylogReflectionV1_tomorrow_'+dateKey(d));if(s.trim())output.push('\n내일 하루를 기대하며\n'+s)}
+  return output.join('\n');
+ }
+ function refreshPreview(){text.value=compose()}
+ btn.onclick=async()=>{refreshPreview();try{await navigator.clipboard.writeText(text.value);status.textContent='복사했어요. 원하는 사람에게 직접 붙여넣어 전달하세요.'}catch(e){text.focus();text.select();status.textContent='자동 복사가 불가능해요. 선택된 내용을 Ctrl+C로 복사해 주세요.'}};
+ details.addEventListener('toggle',()=>{if(details.open)refreshPreview()});details.append(checks,text,btn,status);return details;
+}
+
+function render(){let period=document.getElementById('period'),wrap=document.getElementById('tablewrap');wrap.replaceChildren();const monday=new Date(weekStart),friday=new Date(monday);friday.setDate(friday.getDate()+4);document.querySelectorAll('.viewbtn').forEach(b=>{b.classList.toggle('active',b.dataset.view===view);b.setAttribute('aria-pressed',b.dataset.view===view)});document.getElementById('main-content').classList.toggle('hidden',view==='settings');document.getElementById('settings-content').classList.toggle('open',view==='settings');document.getElementById('reshuffle').style.display=(view==='month'||view==='settings')?'none':'';document.getElementById('detail').style.display=(view==='month'||view==='settings')?'none':'';['prev','next','today','reshuffle','print'].forEach(id=>{document.getElementById(id).style.display=view==='settings'?'none':''});document.getElementById('prev').textContent=view==='month'?'◀ 이전 달':view==='day'?'◀ 이전 날':'◀ 이전 주';document.getElementById('next').textContent=view==='month'?'다음 달 ▶':view==='day'?'다음 날 ▶':'다음 주 ▶';if(view==='settings'){period.textContent='설정';return;}if(view==='month'){
+let y=monthCursor.getFullYear(),m=monthCursor.getMonth(),days=new Date(y,m+1,0).getDate();
+period.textContent=`${y}년 ${m+1}월 · 말씀읽기 / QT / 기도 체크`;
+let note=el('div','muted month-help','날짜를 누르면 아래에서 말씀읽기, QT, 기도를 각각 체크할 수 있어요. 완료한 항목은 달력에 다른 색으로 표시됩니다.');wrap.append(note);
+let legend=el('div','legend');activities.forEach(a=>{let item=el('span');let dot=el('span','activity-dot '+a.id+' on');item.append(dot,document.createTextNode(a.label));legend.append(item)});wrap.append(legend);
+let grid=el('div','calendar-grid');['일','월','화','수','목','금','토'].forEach((w,i)=>grid.append(el('div','calendar-head'+(i===0?' sunday':''),w)));
+let blanks=new Date(y,m,1).getDay();for(let i=0;i<blanks;i++)grid.append(el('div','calendar-empty'));
+for(let n=1;n<=days;n++){
+let d=new Date(y,m,n),cell=el('div','calendar-day'+(selectedMonthDay===n?' selected-day':''));cell.setAttribute('role','button');cell.tabIndex=0;cell.setAttribute('aria-label',`${m+1}월 ${n}일 활동 체크`);
+let num=el('span','calendar-number',String(n)),head=el('div','date-line'),arrow=el('button','day-link','↗');arrow.type='button';arrow.title=`${m+1}월 ${n}일 하루 보기`;arrow.setAttribute('aria-label',`${m+1}월 ${n}일 하루 보기로 이동`);arrow.onclick=e=>{e.stopPropagation();openDay(d)};head.append(num,arrow);cell.append(head,el('div','calendar-verse',dailyVerse(d).ref),activityDots(d));let count=activities.filter(a=>isActivityDone(d,a.id)).length;cell.append(el('span','activity-caption',`${count}/3 완료`));
+cell.onclick=()=>{selectedMonthDay=n;render();let panel=document.getElementById('activity-editor');if(panel)panel.scrollIntoView({block:'nearest',behavior:'smooth'})};cell.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();cell.click()}};grid.append(cell)
+}
+wrap.append(grid);if(selectedMonthDay>days)selectedMonthDay=days;
+let picked=new Date(y,m,selectedMonthDay);let edit=activityEditor(picked);edit.id='activity-editor';wrap.append(edit,verseBody(picked));
+let stats=el('div','activity-stats',activities.map(a=>`${a.label} ${Array.from({length:days},(_,i)=>isActivityDone(new Date(y,m,i+1),a.id)).filter(Boolean).length}일`).join('　·　'));wrap.append(stats);
+}else if(view==='day'){let d=selectedDate,idx=(d.getDay()+6)%7;period.textContent=`${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${['일','월','화','수','목','금','토'][d.getDay()]})`;wrap.append(verseBody(d),reflection(d,'today','오늘 하루를 돌아보며','','오늘 하루 감사했던 일, 돌아볼 점을 기록해 보세요.'));if(idx<5)wrap.append(el('h3','day-table-heading','오늘의 기도 제목'),makeTable(getMonday(d),[idx]));else{wrap.append(el('h3','day-table-heading','오늘의 기도 기록'),el('p','muted','주말에는 요일별 기도 배치 대신 자유롭게 기도를 기록할 수 있어요.'),reflection(d,'weekend','자유 기도 메모','','오늘의 기도 제목을 적어 보세요.'))};wrap.append(reflection(d,'tomorrow','내일 하루를 기대하며','내일의 일정과 계획 가운데 하나님께서 함께하시기를 구하며, 만나게 될 사람들을 위해 기도해 보세요.','내일의 일정, 계획과 만나게 될 사람들을 위한 기도를 적어 보세요.'));wrap.append(shareDayPanel(d));}else{period.textContent=`${monday.getFullYear()}년 ${monday.getMonth()+1}월 ${monday.getDate()}일 ~ ${friday.getMonth()+1}월 ${friday.getDate()}일`;wrap.append(makeTable(monday,[0,1,2,3,4]));}}
+function changeDay(n){selectedDate.setDate(selectedDate.getDate()+n);weekStart=getMonday(selectedDate);dayOffset=(selectedDate.getDay()+6)%7}
+// v14: retain prayerTreeV2 to preserve existing local data.
+const trashKey='praylogDeletedTreeV1';let trash=[];
+try{trash=JSON.parse(appStore.getItem(trashKey))||[]}catch(e){trash=[]}
+let expandedCategory='교회',expandedParent='목회자',trashVisible=false;
+function persistTree(){appStore.setItem(stateKey,JSON.stringify(tree));renderSettingsTree();render()}
+function persistTrash(){appStore.setItem(trashKey,JSON.stringify(trash));renderSettingsTree()}
+
+// Inline editor: all add/rename operations stay inside the three-column settings panel.
+let editing=null, editError='';
+function renameKey(obj,oldKey,newKey){return Object.fromEntries(Object.entries(obj).map(([k,v])=>[k===oldKey?newKey:k,v]))}
+function settingsBtn(txt,title,fn){let b=el('button',null,txt);b.type='button';b.title=title;b.setAttribute('aria-label',title);b.onclick=fn;return b}
+function startEdit(kind,mode,cat='',parent='',index=-1){
+  const original=kind==='cat'?cat:kind==='parent'?parent:(mode==='rename'?tree[cat]?.[parent]?.[index]||'':'');
+  editing={kind,mode,cat,parent,index,value:mode==='rename'?original:''};editError='';
+  if(cat)expandedCategory=cat;if(parent)expandedParent=parent;
+  renderSettingsTree();
+  const input=document.querySelector('.tree-inputline input');if(input){input.focus();input.select()}
+}
+function inlineInput(kind,mode,cat='',parent='',index=-1){
+ const wrap=el('div','tree-inputline'),input=el('input');input.type='text';input.maxLength=110;input.value=editing?.value||'';
+ input.setAttribute('aria-label',mode==='add'?'새 항목 이름':'변경할 이름');
+ input.oninput=()=>{if(editing)editing.value=input.value};
+ const accept=()=>{
+  const name=input.value.trim(); if(!name){editError='이름을 입력해 주세요.';renderSettingsTree();return}
+  let duplicate=false;
+  if(kind==='cat')duplicate=Object.hasOwn(tree,name) && !(mode==='rename'&&cat===name);
+  else if(kind==='parent')duplicate=Object.hasOwn(tree[cat],name) && !(mode==='rename'&&parent===name);
+  else duplicate=tree[cat][parent].some((v,i)=>v===name && !(mode==='rename'&&i===index));
+  if(duplicate){editing.value=name;editError='같은 이름이 이미 있어요.';renderSettingsTree();return}
+  if(kind==='cat'){
+    if(mode==='add'){tree[name]={};expandedCategory=name}
+    else{tree=renameKey(tree,cat,name);expandedCategory=name}
+  }else if(kind==='parent'){
+    if(mode==='add'){tree[cat][name]=[];expandedParent=name}
+    else{tree[cat]=renameKey(tree[cat],parent,name);expandedParent=name}
+  }else{
+    if(mode==='add')tree[cat][parent].push(name);else tree[cat][parent][index]=name;
+  }
+  editing=null;editError='';persistTree();
+ };
+ input.onkeydown=ev=>{if(ev.key==='Enter'){ev.preventDefault();accept()}else if(ev.key==='Escape'){editing=null;editError='';renderSettingsTree()}};
+ const ok=settingsBtn('✓','저장',accept),cancel=settingsBtn('취소','편집 취소',()=>{editing=null;editError='';renderSettingsTree()});
+ wrap.append(input,ok,cancel);if(editError)wrap.append(el('div','tree-inline-error',editError));return wrap
+}
+function matchesEdit(kind,mode,cat='',parent='',index=-1){return editing&&editing.kind===kind&&editing.mode===mode&&editing.cat===cat&&editing.parent===parent&&editing.index===index}
+function opsForCat(cat){let a=el('span','tree-ops');a.append(settingsBtn('＋','기도 제목 추가',()=>startEdit('parent','add',cat)),settingsBtn('✎','카테고리 이름 변경',()=>startEdit('cat','rename',cat)),settingsBtn('↑','카테고리 위로 이동',()=>{tree=reorder(tree,cat,-1);persistTree()}),settingsBtn('↓','카테고리 아래로 이동',()=>{tree=reorder(tree,cat,1);persistTree()}),settingsBtn('×','카테고리 삭제',()=>deleteCat(cat)));return a}
+function opsForParent(cat,parent){let a=el('span','tree-ops');a.append(settingsBtn('＋','세부 대상 추가',()=>startEdit('child','add',cat,parent)),settingsBtn('✎','기도 제목 이름 변경',()=>startEdit('parent','rename',cat,parent)),settingsBtn('↑','위로 이동',()=>{tree[cat]=reorder(tree[cat],parent,-1);persistTree()}),settingsBtn('↓','아래로 이동',()=>{tree[cat]=reorder(tree[cat],parent,1);persistTree()}),settingsBtn('×','기도 제목 삭제',()=>deleteParent(cat,parent)));return a}
+function deleteCat(cat){if(!confirm('카테고리 '+cat+'와 하위 항목을 복구함으로 이동할까요?'))return;let idx=Object.keys(tree).indexOf(cat);trash.push({id:Date.now()+Math.random(),kind:'category',cat,index:idx,value:tree[cat]});delete tree[cat];expandedCategory='';persistTrash();persistTree()}
+function deleteParent(cat,parent){if(!confirm(parent+'와 하위 항목을 복구함으로 이동할까요?'))return;trash.push({id:Date.now()+Math.random(),kind:'parent',cat,parent,index:Object.keys(tree[cat]).indexOf(parent),value:tree[cat][parent]});delete tree[cat][parent];expandedParent='';persistTrash();persistTree()}
+function deleteChild(cat,parent,index){let name=tree[cat][parent][index];if(!confirm(name+' 세부 대상을 삭제할까요?'))return;trash.push({id:Date.now()+Math.random(),kind:'child',cat,parent,index,value:name});tree[cat][parent].splice(index,1);persistTrash();persistTree()}
+function restoreEntry(id){const t=trash.find(x=>x.id===id);if(!t)return;let succeeded=false;
+ if(t.kind==='category'){if(Object.hasOwn(tree,t.cat))return alert('같은 카테고리가 있어요. 먼저 이름을 변경해 주세요.');let entries=Object.entries(tree);entries.splice(Math.min(t.index,entries.length),0,[t.cat,t.value]);tree=Object.fromEntries(entries);succeeded=true;expandedCategory=t.cat}
+ else if(t.kind==='parent'){if(!tree[t.cat])return alert('먼저 '+t.cat+' 카테고리를 복구하세요.');if(Object.hasOwn(tree[t.cat],t.parent))return alert('같은 기도 제목이 이미 있어요.');let entries=Object.entries(tree[t.cat]);entries.splice(Math.min(t.index,entries.length),0,[t.parent,t.value]);tree[t.cat]=Object.fromEntries(entries);succeeded=true;expandedCategory=t.cat;expandedParent=t.parent}
+ else if(t.kind==='child'){if(!tree[t.cat]?.[t.parent])return alert('먼저 부모 카테고리와 기도 제목을 복구하세요.');tree[t.cat][t.parent].splice(Math.min(t.index,tree[t.cat][t.parent].length),0,t.value);succeeded=true;expandedCategory=t.cat;expandedParent=t.parent}
+ if(succeeded){trash=trash.filter(x=>x.id!==id);persistTrash();persistTree()}}
+function renderSettingsTree(){const root=document.getElementById('tree-editor');root.replaceChildren();
+ document.getElementById('trash-count').textContent=trash.length?'('+trash.length+')':'';
+ const panel=document.getElementById('trash-panel');panel.classList.toggle('hidden',!trashVisible);panel.replaceChildren();
+ if(trashVisible){if(!trash.length)panel.append(el('p','muted','복구할 항목이 없어요.'));for(const t of [...trash].reverse()){let label=t.kind==='category'?'카테고리':t.kind==='parent'?'기도 제목':'세부 대상';let line=el('div','trash-line'),text=el('span',null,label+' · '+(t.kind==='category'?t.cat:t.kind==='parent'?t.cat+' → '+t.parent:t.cat+' → '+t.parent+' → '+t.value));line.append(text,settingsBtn('↶ 복구','선택한 항목만 복구',()=>restoreEntry(t.id)));panel.append(line)}}
+ if(matchesEdit('cat','add')){let r=el('div','tree-cat'),cell=el('div','tree-cat-label');cell.append(inlineInput('cat','add'));r.append(cell,el('div','tree-center'));root.append(r)}
+ for(const cat of Object.keys(tree)){
+  const row=el('div','tree-cat'),label=el('div','tree-cat-label');
+  if(matchesEdit('cat','rename',cat))label.append(inlineInput('cat','rename',cat));
+  else{let left=el('button','tree-name',(expandedCategory===cat?'▾ ':'▸ ')+cat);left.onclick=()=>{expandedCategory=expandedCategory===cat?'':cat;expandedParent='';renderSettingsTree()};label.append(left,opsForCat(cat))}
+  row.append(label);const center=el('div','tree-center');
+  if(expandedCategory===cat){
+    const parents=Object.keys(tree[cat]);if(!parents.length&&!matchesEdit('parent','add',cat))center.append(el('div','tree-item-name tree-empty','기도 제목이 없어요. ＋ 버튼으로 추가하세요.'));
+    for(const parent of parents){let namecell=el('div','tree-item-name'),subcell=el('div','tree-subcolumn');
+      if(matchesEdit('parent','rename',cat,parent))namecell.append(inlineInput('parent','rename',cat,parent));
+      else{let name=el('button','tree-name',(expandedParent===parent?'▾ ':'▸ ')+parent.replace(' (두 번째)',''));name.onclick=()=>{expandedParent=expandedParent===parent?'':parent;renderSettingsTree()};namecell.append(name,opsForParent(cat,parent))}
+      if(expandedParent===parent){const people=tree[cat][parent];if(!people.length&&!matchesEdit('child','add',cat,parent))subcell.append(el('span','tree-empty','등록된 세부 대상 없음'));
+        people.forEach((person,i)=>{const line=el('div','tree-subline');if(matchesEdit('child','rename',cat,parent,i))line.append(inlineInput('child','rename',cat,parent,i));else{let txt=el('span',null,person),actions=el('span','tree-ops');actions.append(settingsBtn('✎','이름 수정',()=>startEdit('child','rename',cat,parent,i)),settingsBtn('×','세부 대상 삭제',()=>deleteChild(cat,parent,i)));line.append(txt,actions)}subcell.append(line)});
+        if(matchesEdit('child','add',cat,parent)){const line=el('div','tree-subline');line.append(inlineInput('child','add',cat,parent));subcell.append(line)}
+      }
+      center.append(namecell,subcell);
+    }
+    if(matchesEdit('parent','add',cat)){const namecell=el('div','tree-item-name');namecell.append(inlineInput('parent','add',cat));center.append(namecell,el('div','tree-subcolumn'))}
+  }
+  row.append(center);root.append(row)
+ }
+}
+document.getElementById('tree-add-category').onclick=()=>startEdit('cat','add');
+document.getElementById('tree-trash-toggle').onclick=()=>{trashVisible=!trashVisible;renderSettingsTree()};
+document.getElementById('prev').onclick=()=>{if(view==='day')changeDay(-1);else if(view==='month'){monthCursor=new Date(monthCursor.getFullYear(),monthCursor.getMonth()-1,1);selectedMonthDay=1}else weekStart.setDate(weekStart.getDate()-7);render()};document.getElementById('next').onclick=()=>{if(view==='day')changeDay(1);else if(view==='month'){monthCursor=new Date(monthCursor.getFullYear(),monthCursor.getMonth()+1,1);selectedMonthDay=1}else weekStart.setDate(weekStart.getDate()+7);render()};document.getElementById('today').onclick=()=>{weekStart=getMonday(new Date());monthCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1);selectedDate=new Date();dayOffset=(selectedDate.getDay()+6)%7;render()};document.querySelectorAll('.viewbtn').forEach(b=>b.onclick=()=>{view=b.dataset.view;if(view==='month')monthCursor=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);if(view==='day')weekStart=getMonday(selectedDate);render()});document.getElementById('print').onclick=()=>window.print();document.getElementById('reshuffle').onclick=()=>{let k=dateKey(weekStart);refresh[k]=(refresh[k]||0)+1;appStore.setItem('prayerRefreshV2',JSON.stringify(refresh));render()};renderSettingsTree();render();loadExtendedVerses();
+</script>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
+import { getFirestore, collection, doc, setDoc, getDocs, onSnapshot } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
+
+const firebaseConfig={
+ apiKey:'AIzaSyCFkFNdRnrMGsctaRMLlOMnzKf4ul9tkmQ',
+ authDomain:'praylog-58e06.firebaseapp.com',
+ projectId:'praylog-58e06',
+ storageBucket:'praylog-58e06.firebasestorage.app',
+ messagingSenderId:'1047876079495',
+ appId:'1:1047876079495:web:bb9b021a2855ed72e20d22'
+};
+const fb=initializeApp(firebaseConfig),auth=getAuth(fb),db=getFirestore(fb);
+const login=document.getElementById('auth-login'),logout=document.getElementById('auth-logout'),syncBtn=document.getElementById('auth-sync');
+const state=document.getElementById('auth-state'),who=document.getElementById('auth-user'),banner=document.getElementById('cloud-banner');
+let unsubscribe=null, current=null,ready=false,flushTimer=null;
+const queue=new Map();
+const allowed=k=>/^(prayerTreeV2|prayerRefreshV2|praylogDeletedTreeV1|prayerActivity_|prayerDone_|prayerCategoryNoteV1_|praylogReflectionV1_|prayerVerseCopy_|q_)/.test(k) && k!=='prayerBibleVersePoolV1';
+const encodeKey=k=>btoa(unescape(encodeURIComponent(k))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/g,'');
+const cacheName=(uid,k)=>'praylogV15_user_'+uid+'_'+k;
+const timeName=(uid,k)=>'praylogV15_ts_'+uid+'_'+encodeURIComponent(k);
+const cache=uid=>Object.keys(localStorage).filter(k=>k.startsWith('praylogV15_user_'+uid+'_')).map(k=>({key:k.slice(('praylogV15_user_'+uid+'_').length),value:localStorage.getItem(k)})).filter(x=>allowed(x.key));
+const guest=()=>Object.keys(localStorage).filter(allowed).map(key=>({key,value:localStorage.getItem(key)}));
+const col=uid=>collection(db,'users',uid,'entries');
+const setStatus=(message,type='')=>{state.textContent=message;state.className='auth-state '+type};
+function showBanner(message,buttons=[],warn=false){banner.replaceChildren();banner.classList.remove('hidden');banner.classList.toggle('warning',warn);const p=document.createElement('p');p.textContent=message;banner.append(p);const row=document.createElement('div');row.className='controls';for(const [text,fn] of buttons){let b=document.createElement('button');b.type='button';b.textContent=text;b.onclick=fn;row.append(b)}banner.append(row)}
+function hideBanner(){banner.classList.add('hidden');banner.replaceChildren()}
+async function writeRecord(uid,key,value,at=Date.now()){
+ await setDoc(doc(db,'users',uid,'entries',encodeKey(key)),{key,value,updatedAt:at});
+}
+async function pushList(uid,items){for(let i=0;i<items.length;i+=10){await Promise.all(items.slice(i,i+10).map(item=>writeRecord(uid,item.key,item.value,Number(item.updatedAt)||Date.now())))} }
+function activate(uid){ready=true;window.praylogSetActiveUser(uid,true);setStatus('클라우드 연결됨 · 자동 저장','ok');syncBtn.classList.remove('hidden');login.classList.add('hidden');logout.classList.remove('hidden')}
+function applyRemote(uid,key,value,updatedAt){
+ if(!allowed(key))return false;
+ const t=Number(localStorage.getItem(timeName(uid,key))||0);
+ if(t>updatedAt)return false;
+ const k=cacheName(uid,key),old=localStorage.getItem(k);
+ localStorage.setItem(k,value);localStorage.setItem(timeName(uid,key),String(updatedAt));return old!==value;
+}
+let redrawTimer;
+function renderIncoming(){
+ clearTimeout(redrawTimer);redrawTimer=setTimeout(()=>{
+  if(!ready)return;
+  const focused=document.activeElement;
+  if(focused&&(focused.matches('textarea,input[type="text"]')||focused.isContentEditable)){
+   focused.addEventListener('blur',()=>{if(ready)window.praylogSetActiveUser(current.uid,true)},{once:true});return;
+  }
+  window.praylogSetActiveUser(current.uid,true);
+ },250);
+}
+function listen(uid){
+ if(unsubscribe){unsubscribe();unsubscribe=null}
+ unsubscribe=onSnapshot(col(uid),snap=>{
+  if(!ready||current?.uid!==uid)return;
+  let changed=false;
+  for(const change of snap.docChanges()){
+   if(change.type==='removed')continue;
+   const {key,value,updatedAt}=change.doc.data();
+   if(typeof key==='string'&&typeof value==='string')changed=applyRemote(uid,key,value,Number(updatedAt)||0)||changed;
+  }
+  if(changed)renderIncoming();
+ },err=>setStatus('실시간 동기화 오류: '+err.message,'warn'));
+}
+async function flush(){
+ if(!current||!ready||!queue.size)return;
+ const uid=current.uid,items=[...queue.entries()].filter(([,x])=>x.uid===uid);
+ for(const [key,x] of items){
+  try{await writeRecord(uid,key,x.value,x.updatedAt);if(queue.get(key)===x)queue.delete(key)}
+  catch(err){setStatus('클라우드 저장 실패 · 이 기기에는 기록됨: '+err.message,'warn');return}
+ }
+ if(!queue.size)setStatus('클라우드에 저장됨','ok');
+}
+window.addEventListener('praylog:local-change',e=>{
+ const {uid,key,value}=e.detail;if(!ready||current?.uid!==uid||!allowed(key))return;
+ queue.set(key,{uid,value,updatedAt:Number(localStorage.getItem(timeName(uid,key)))||Date.now()});
+ setStatus('변경 사항을 클라우드에 저장하는 중…');clearTimeout(flushTimer);flushTimer=setTimeout(flush,500);
+});
+window.addEventListener('online',()=>{if(queue.size)flush()});
+login.onclick=async()=>{try{login.disabled=true;setStatus('Google 로그인 창을 여는 중…');await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){
+ let message=e.message;
+ if(e.code==='auth/unauthorized-domain')message='GitHub Pages 주소의 호스트(예: 아이디.github.io)를 Firebase Authentication → 설정 → 승인된 도메인에 추가해 주세요.';
+ else if(e.code==='auth/popup-blocked')message='팝업이 차단되었어요. 브라우저에서 팝업을 허용해 주세요.';
+ else if(e.code==='auth/popup-closed-by-user')message='로그인이 취소되었어요.';
+ setStatus(message,'warn')
+ }finally{login.disabled=false}};
+logout.onclick=async()=>{clearTimeout(flushTimer);await flush();try{await signOut(auth)}catch(e){setStatus('로그아웃 실패: '+e.message,'warn')}};
+syncBtn.onclick=async()=>{setStatus('동기화 중…');await flush();if(current)await connect(current)};
+async function connect(user){
+ const uid=user.uid;ready=false;hideBanner();setStatus('기도 기록을 안전하게 불러오는 중…');
+ try{
+  const snapshot=await getDocs(col(uid));if(current?.uid!==uid)return;
+  const cloudDocs=new Map();snapshot.forEach(s=>{let r=s.data();if(r && typeof r.key==='string'&&typeof r.value==='string'&&allowed(r.key))cloudDocs.set(r.key,r)});
+  // No cloud data yet: ask before importing any unsynced, guest-only data.
+  const personCache=cache(uid),guestCache=guest();
+  if(cloudDocs.size===0 && personCache.length===0 && guestCache.length){
+   setStatus('첫 로그인 · 기록 이전 방법을 선택해 주세요.');
+   showBanner('이 브라우저에 로그인 이전의 Praylog 기록이 있어요. 현재 Google 계정의 개인 기록으로 복사할까요? 원본은 이 브라우저에 그대로 남습니다.',[
+    ['기존 기록을 가져와서 동기화',async()=>{
+     try{setStatus('기록을 안전하게 가져오는 중…');const timestamp=Date.now();const items=guestCache.map(x=>({...x,updatedAt:timestamp}));await pushList(uid,items);for(const x of items)applyRemote(uid,x.key,x.value,timestamp);hideBanner();activate(uid);listen(uid)}
+     catch(e){setStatus('이전 실패: '+e.message,'warn')}
+    }],
+    ['새 계정으로 빈 기도표 시작',()=>{hideBanner();activate(uid);listen(uid)}]
+   ]);return;
+  }
+  let upload=[];
+  for(const r of cloudDocs.values())applyRemote(uid,r.key,r.value,Number(r.updatedAt)||0);
+  for(const entry of personCache){
+    const localTs=Number(localStorage.getItem(timeName(uid,entry.key))||0);
+    const cloudTs=Number(cloudDocs.get(entry.key)?.updatedAt||0);
+    if(!cloudDocs.has(entry.key) || localTs>cloudTs)upload.push({...entry,updatedAt:localTs||Date.now()});
+  }
+  if(upload.length)await pushList(uid,upload);
+  if(current?.uid!==uid)return;
+  activate(uid);listen(uid);
+ }catch(e){setStatus('클라우드에 접근할 수 없어요: '+e.message,'warn');showBanner('Firestore 규칙이 아직 모든 접근을 차단한다면, 함께 제공한 firestore.rules.txt의 사용자별 규칙을 Firebase 콘솔 → Firestore → 규칙에 붙여넣고 게시해 주세요. 규칙을 게시한 다음 ↻ 동기화를 누르세요.',[['다시 연결',()=>connect(user)]],true)}
+}
+onAuthStateChanged(auth,async user=>{
+ clearTimeout(flushTimer);queue.clear();ready=false;if(unsubscribe){unsubscribe();unsubscribe=null}
+ current=user;
+ if(!user){window.praylogSetActiveUser(null,false);who.textContent='방문자 모드';setStatus('로그인하지 않은 기록은 이 브라우저에만 저장돼요.');login.classList.remove('hidden');logout.classList.add('hidden');syncBtn.classList.add('hidden');hideBanner();return}
+ who.textContent=user.displayName||user.email||'Google 계정';login.classList.add('hidden');logout.classList.remove('hidden');syncBtn.classList.remove('hidden');await connect(user);
+});
+</script>
+</body></html>
